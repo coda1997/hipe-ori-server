@@ -56,8 +56,9 @@ A tiny server for syncing point data to users
 
 -  采集的点信息
 
+
 |字段|类型|空|默认|注释|
-|:----    |:-------    |:--- |-- -|------      |
+|:----    |:-------    |:--- |:---|------      |
 |id    |int    |否 |  |             |
 |type |int |否 |    |   数据的类型  |
 |time |varchar(50) |否   |    |   数据采集的时间    |
@@ -66,6 +67,7 @@ A tiny server for syncing point data to users
 |level|int|否|||
 |latitude|string|否||采集数据的纬度|
 |longitude|string|否||采集数据的经度|
+
 - 备注：无
 
 
