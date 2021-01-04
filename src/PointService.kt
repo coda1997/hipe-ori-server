@@ -21,10 +21,7 @@ enum class PointType(val type: Int) {
     IMG(4)
 }
 
-val config = Dconfig("127.0.0.1", 5432, "postgres", "123456")
-val connection: Connection = PostgreSQLConnectionBuilder.createConnectionPool(
-    "jdbc:postgresql://${config.ip}:${config.port}/postgres?user=${config.userName}&password=${config.password}"
-)
+
 
 const val INSERT_SQL = "insert into point (type, time, building_name, floor, level, latitude, longitude) values "
 
