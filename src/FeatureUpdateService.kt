@@ -3,6 +3,7 @@ package com.dadachen
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import java.io.File
+import java.lang.StringBuilder
 
 data class PPoint(
     @SerializedName("Building ID") val bid: String,
@@ -27,17 +28,45 @@ data class WifiScanInfo(
     @SerializedName("AP") val ap:Int
 )
 
-fun updateWifiFeature(bid: String, fid: Int, file: File): Boolean {
+fun updateWifiFeature(file: File): Boolean {
     val content = file.readBytes()
     //its a json file, need to parse it
     val points = Gson().fromJson(content.toString(), Array<PPoint>::class.java)
     //handle points
-    //insert points into db file
+    val sql = genWifiInsertSql(points)
 
-    return true
+    //insert points into db file
+    val result = connection.sendQuery(sql).join()
+
+    return result.rowsAffected==points.totalCount()
 }
 
+private fun Array<PPoint>.totalCount():Long{
+    var c = 0L
+    this.forEach { p->
+        p.wifiScans.forEach { scan->
+            c+=scan.wifiScanInfos.size
+        }
+    }
+    return c
+}
 
+private val baseSQL =
+    "insert into fingerprint_lib (model_num, update_num, building_id, floor, signal_type,coordinate_x,coordinate_y,signal_mac_address,signal_strength,signal_time) values"
+private var modelNum = 1
+private var updateNum = 1
+private fun genWifiInsertSql(points:Array<PPoint>):String{
+    val sqlList = mutableListOf<String>()
+    for (point in points) {
+        for (wifiScan in point.wifiScans) {
+            for (wifiScanInfo in wifiScan.wifiScanInfos) {
+                val sql = "($modelNum,$updateNum,'${point.bid}','${point.fid}',${point.posLon},${point.posLat},'${wifiScanInfo.bssid}',${wifiScanInfo.level},'${wifiScanInfo.date}')"
+                sqlList.add(sql)
+            }
+        }
+    }
+    return baseSQL+sqlList.joinToString(",")
+}
 
 fun updateBleFeature(bid: String, file: File): Boolean {
     return true

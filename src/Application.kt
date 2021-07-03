@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.gson.*
+import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.request.*
@@ -16,9 +17,9 @@ import java.io.File
 import java.io.FileReader
 
 lateinit var connection: Connection
-fun main(args: Array<String>) {
+fun main() {
     val file = FileReader(File("config.json")).readText()
-    val config = Gson().fromJson<Dconfig>(file, Dconfig::class.java)
+    val config = Gson().fromJson(file, Dconfig::class.java)
     println(config.toString())
     connection = PostgreSQLConnectionBuilder.createConnectionPool(
         "jdbc:postgresql://${config.ip}:${config.dataBasePort}/${config.dataBaseName}?user=${config.username}&password=${config.password}"
@@ -55,32 +56,37 @@ fun main(args: Array<String>) {
             route("/feature") {
                 post("/wifi/{bid}/{fid}") {
                     //handle adding wifi feature
+                    var success = true
                     val bid = call.parameters["bid"] ?: ""
                     val fid = call.parameters["fid"]?.toInt() ?: 0
                     val multipart = call.receiveMultipart()
                     multipart.forEachPart { part ->
                         if (part is PartData.FileItem) {
                             val name = part.originalFileName!!
-                            val f = File("/uploads/$bid/")
+                            val f = File("/uploads/$bid/floor_$fid/$name")
                             part.streamProvider().use { inputSteam ->
                                 f.outputStream().buffered().use {
                                     inputSteam.copyTo(it)
                                 }
                             }
-                            updateWifiFeature(bid, fid, f)
+                            success = updateWifiFeature(f) && success
                         }
                         part.dispose()
-
+                    }
+                    if (success) {
+                        call.respond(HttpStatusCode.OK, message = "Update succeed")
+                    } else {
+                        call.respond(HttpStatusCode.BadRequest, message = "Update failed")
                     }
                 }
                 post("/ble/{bid}") {
                     //handle adding ble
                     val bid = call.parameters["bid"] ?: ""
                     val multipart = call.receiveMultipart()
-                    multipart.forEachPart { part->
-                        if (part is PartData.FileItem){
+                    multipart.forEachPart { part ->
+                        if (part is PartData.FileItem) {
                             val name = part.originalFileName!!
-                            val f = File("/uploads/$bid/")
+                            val f = File("/uploads/$bid/$name")
                             part.streamProvider().use { inputSteam ->
                                 f.outputStream().buffered().use {
                                     inputSteam.copyTo(it)
@@ -95,10 +101,10 @@ fun main(args: Array<String>) {
                 post("/pic/{bid}") {
                     val bid = call.parameters["bid"] ?: ""
                     val multipart = call.receiveMultipart()
-                    multipart.forEachPart { part->
-                        if (part is PartData.FileItem){
+                    multipart.forEachPart { part ->
+                        if (part is PartData.FileItem) {
                             val name = part.originalFileName!!
-                            val f = File("/uploads/$bid/")
+                            val f = File("/uploads/$bid/$name")
                             part.streamProvider().use { inputSteam ->
                                 f.outputStream().buffered().use {
                                     inputSteam.copyTo(it)
@@ -116,7 +122,7 @@ fun main(args: Array<String>) {
                     multipart.forEachPart { part ->
                         if (part is PartData.FileItem) {
                             val name = part.originalFileName!!
-                            val f = File("/uploads/$bid/")
+                            val f = File("/uploads/$bid/floor_$fid/$name")
                             part.streamProvider().use { inputSteam ->
                                 f.outputStream().buffered().use {
                                     inputSteam.copyTo(it)
