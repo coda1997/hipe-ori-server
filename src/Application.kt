@@ -56,7 +56,7 @@ fun main(args: Array<String>) {
                 post("/wifi/{bid}/{fid}") {
                     //handle adding wifi feature
                     val bid = call.parameters["bid"] ?: ""
-                    val fid = call.parameters["fid"] ?: ""
+                    val fid = call.parameters["fid"]?.toInt() ?: 0
                     val multipart = call.receiveMultipart()
                     multipart.forEachPart { part ->
                         if (part is PartData.FileItem) {
@@ -111,7 +111,7 @@ fun main(args: Array<String>) {
                 }
                 post("mag/{bid}/{fid}") {
                     val bid = call.parameters["bid"] ?: ""
-                    val fid = call.parameters["fid"] ?: ""
+                    val fid = call.parameters["fid"]?.toInt() ?: 0
                     val multipart = call.receiveMultipart()
                     multipart.forEachPart { part ->
                         if (part is PartData.FileItem) {
