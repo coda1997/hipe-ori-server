@@ -33,8 +33,8 @@ fun updateWifiFeature(file: File, bid: String): Boolean {
     //its a json file, need to parse it
     val points = Gson().fromJson(content.toString(), Array<PPoint>::class.java)
     val r = getLastVersion(bid, "wifi")
-    val modelNum = r[0]+1
-    val updateNum = r[1]
+    val modelNum = r[0]
+    val updateNum = r[1]+1
     //handle points
     val sql = genWifiInsertSql(points, modelNum, updateNum)
     updateVersion(modelNum, updateNum, bid, "wifi")
@@ -84,18 +84,18 @@ private fun updateVersion(modelNum: Int, updateNum: Int, bid: String, type: Stri
         "ble" -> 2
         "pic" -> 3
         "mag" -> 4
-        else -> 1
+        else -> 0
     }
     return updateVersion(modelNum, updateNum, bid, intType)
 }
 
-private fun getLastVersion(bid:String, type: String):IntArray{
+fun getLastVersion(bid:String, type: String):IntArray{
     val intType: Int = when (type) {
         "wifi" -> 1
         "ble" -> 2
         "pic" -> 3
         "mag" -> 4
-        else -> 1
+        else -> 0
     }
     return getLastVersion(bid, intType)
 }
@@ -127,7 +127,7 @@ fun insertIntoStaticLib(bid: String, modelNum: Int, updateNum: Int, typeString: 
         "ble" -> 2
         "pic" -> 3
         "mag" -> 4
-        else -> 1
+        else -> 0
     }
     val sql = "insert into static_feature_lib (model_num, update_num, building_id, signal_type, floor, source_url) value ($modelNum, $updateNum, '$bid',$type,'$floor','$sourcePath')"
     val result = connection.sendQuery(sql).join()

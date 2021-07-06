@@ -55,6 +55,11 @@ fun main() {
                 }
             }
             route("/feature") {
+                get("/{bid}"){
+                    val bid = call.parameters["bid"] ?: ""
+                    val f = downloadFeatureData(arrayOf(bid))
+                    call.respondFile(f)
+                }
                 post("/wifi/{bid}/{fid}") {
                     //handle adding wifi feature
                     var success = true
