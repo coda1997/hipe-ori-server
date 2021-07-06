@@ -1,7 +1,7 @@
 {
   "port": 16828,
-  "username":"postgres",
-  "password":"123456",
+  "username":"fuser",
+  "password":"whucs@207",
   "dataBasePort":5432,
   "ip":"127.0.0.1",
   "dataBaseName":"postgres"

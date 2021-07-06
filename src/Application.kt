@@ -15,6 +15,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import java.io.File
 import java.io.FileReader
+import java.util.*
 
 lateinit var connection: Connection
 fun main() {
@@ -63,13 +64,13 @@ fun main() {
                     multipart.forEachPart { part ->
                         if (part is PartData.FileItem) {
                             val name = part.originalFileName!!
-                            val f = File("/uploads/$bid/floor_$fid/$name")
+                            val f = File("/uploads/$bid/floor_$fid/${UUID.randomUUID().toString()+"-"+name}")
                             part.streamProvider().use { inputSteam ->
                                 f.outputStream().buffered().use {
                                     inputSteam.copyTo(it)
                                 }
                             }
-                            success = updateWifiFeature(f) && success
+                            success = updateWifiFeature(f, bid) && success
                         }
                         part.dispose()
                     }
@@ -86,7 +87,7 @@ fun main() {
                     multipart.forEachPart { part ->
                         if (part is PartData.FileItem) {
                             val name = part.originalFileName!!
-                            val f = File("/uploads/$bid/$name")
+                            val f = File("/uploads/$bid/${UUID.randomUUID().toString()+"-"+name}")
                             part.streamProvider().use { inputSteam ->
                                 f.outputStream().buffered().use {
                                     inputSteam.copyTo(it)
@@ -104,7 +105,7 @@ fun main() {
                     multipart.forEachPart { part ->
                         if (part is PartData.FileItem) {
                             val name = part.originalFileName!!
-                            val f = File("/uploads/$bid/$name")
+                            val f = File("/uploads/$bid/${UUID.randomUUID().toString()+"-"+name}")
                             part.streamProvider().use { inputSteam ->
                                 f.outputStream().buffered().use {
                                     inputSteam.copyTo(it)
@@ -122,7 +123,7 @@ fun main() {
                     multipart.forEachPart { part ->
                         if (part is PartData.FileItem) {
                             val name = part.originalFileName!!
-                            val f = File("/uploads/$bid/floor_$fid/$name")
+                            val f = File("/uploads/$bid/floor_$fid/${UUID.randomUUID().toString()+"-"+name}")
                             part.streamProvider().use { inputSteam ->
                                 f.outputStream().buffered().use {
                                     inputSteam.copyTo(it)
