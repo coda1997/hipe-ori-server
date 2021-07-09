@@ -1,26 +1,82 @@
 
-## Hipe-ori-server
+# Hipe-ori-server
 
 A tiny server for syncing point data to users
 
 
-### API
+## API
 
-#### 查询Point接口
+### 指纹文件上传
 
-##### 简要描述
+#### 简要描述
+
+- 上传采集的指纹库文件
+
+#### 请求url
+
+- baseurl/wifi/{bid}/{fid}
+- baseurl/ble/{bid}
+- baseurl/pic/{bid}
+- baseurl/mag/{bid}/{fid}
+
+bid为大楼名（字母）、fid为楼层（数字）
+
+#### 请求方式
+
+- POST multipart files
+上传成功返回200 OK状态码
+  
+### 指纹文件版本显示
+
+- baseurl/feature/bid
+
+#### 简要描述
+
+通过接口可以访问制定大楼（bid）的指纹消息，以json的格式返回
+
+#### 请求方式
+
+- GET baseurl/feature/version/{bid}
+
+#### 返回事例
+
+```json
+[
+  {
+    "bid": "shilintong",
+    "model_num": 1,
+    "update_num": 2,
+    "signal_type": "wifi/ble/pic/mag"
+  }  
+]
+```
+
+### 指纹下载
+
+#### 简要描述
+
+提供简单的下载指纹文件接口，其中所有文件使用zip压缩
+
+#### 请求url
+
+- GET baseurl/feature/{bid}
+- 返回一个zip后缀的文件
+
+### 查询Point接口
+
+#### 简要描述
 
 - 返回用户的采集位置数据
 
-##### 请求URL
+#### 请求URL
 - ` http://xx.com/point/id`
 
-##### 请求方式
+#### 请求方式
 - GET
 
 
 
-##### 返回示例
+#### 返回示例
 
 ``` 
   [
@@ -38,7 +94,7 @@ A tiny server for syncing point data to users
   ]
 ```
 
-##### 返回参数说明
+#### 返回参数说明
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |
@@ -51,7 +107,7 @@ A tiny server for syncing point data to users
 |latitude|string|采集数据的纬度|
 |longitude|string|采集数据的经度|
 
-#### 数据库格式
+### 数据库格式
 
 
 -  采集的点信息
@@ -71,19 +127,19 @@ A tiny server for syncing point data to users
 - 备注：无
 
 
-#### 添加点数据接口
+### 添加点数据接口
 
-##### 简要描述
+#### 简要描述
 
 - 用户添加采集数据
 
-##### 请求URL
+#### 请求URL
 - ` http://xx.com/point `
 
-##### 请求方式
+#### 请求方式
 - PATCH
 
-##### 参数
+#### 参数
 
 ``` 
   [
@@ -101,7 +157,7 @@ A tiny server for syncing point data to users
   ]
 ```
 
-##### 返回示例
+#### 返回示例
 
 ```
 {
@@ -110,7 +166,7 @@ A tiny server for syncing point data to users
 
 ```
 
-##### 返回参数说明
+#### 返回参数说明
 
 |参数名|类型|说明|
 |:-----  |:-----|-----                           |

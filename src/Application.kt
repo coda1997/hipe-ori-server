@@ -55,6 +55,11 @@ fun main() {
                 }
             }
             route("/feature") {
+                get("/version/{bid}"){
+                    val bid = call.parameters["bid"] ?: ""
+                    val data = getVersionByBid(bid)
+                    call.respondText(data)
+                }
                 get("/{bid}"){
                     val bid = call.parameters["bid"] ?: ""
                     val f = downloadFeatureData(arrayOf(bid))
@@ -141,6 +146,7 @@ fun main() {
                     }
                 }
             }
+
         }
     }.start()
 }
