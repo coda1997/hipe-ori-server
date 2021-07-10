@@ -17,7 +17,6 @@ group 'com.dadachen'
 version '0.0.1'
 mainClassName = "io.ktor.server.netty.EngineMain"
 shadowJar {
-    mainClassName = "io.ktor.server.netty.EngineMain"
     manifest {
         attributes 'Main-Class': mainClassName
     }
