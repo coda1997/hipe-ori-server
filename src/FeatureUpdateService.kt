@@ -108,7 +108,7 @@ private fun getLastVersion(bid: String, type: Int):IntArray{
         val updateNum = row[2].toString().toInt()
         return intArrayOf(modelNum, updateNum)
     }else{
-        return intArrayOf(-1,-1)
+        return intArrayOf(1,1)
     }
 }
 
