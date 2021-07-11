@@ -118,7 +118,7 @@ fun updateBleFeature(bid: String, file: File): Boolean {
     val modelNum = r[0]+1
     val updateNum = r[1]
     updateVersion(modelNum, updateNum, bid, "ble")
-    return insertIntoStaticLib(bid, modelNum, updateNum, "bld", "0", path)
+    return insertIntoStaticLib(bid, modelNum, updateNum, "ble", "0", path)
 }
 
 fun insertIntoStaticLib(bid: String, modelNum: Int, updateNum: Int, typeString: String, floor:String, sourcePath:String) :Boolean{
