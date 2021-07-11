@@ -14,10 +14,10 @@ A tiny server for syncing point data to users
 
 #### 请求url
 
-- baseurl/wifi/{bid}/{fid}
-- baseurl/ble/{bid}
-- baseurl/pic/{bid}
-- baseurl/mag/{bid}/{fid}
+- baseurl/feature/wifi/{bid}/{fid}
+- baseurl/feature/ble/{bid}
+- baseurl/feature/pic/{bid}
+- baseurl/feature/mag/{bid}/{fid}
 
 bid为大楼名（字母）、fid为楼层（数字）
 

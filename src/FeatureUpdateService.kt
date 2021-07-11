@@ -28,7 +28,7 @@ data class WifiScanInfo(
     @SerializedName("AP") val ap: Int
 )
 
-fun updateWifiFeature(file: File, bid: String): Boolean {
+fun     updateWifiFeature(file: File, bid: String): Boolean {
     val content = file.readBytes()
     //its a json file, need to parse it
     val points = Gson().fromJson(content.toString(), Array<PPoint>::class.java)
@@ -73,7 +73,7 @@ private fun genWifiInsertSql(points: Array<PPoint>, modelNum: Int, updateNum: In
 
 private fun updateVersion(modelNum: Int, updateNum: Int, bid: String, type: Int): Boolean {
     val sql =
-        "insert into version_lib (model_num, update_num, building_id, signal_type) value ($modelNum, $updateNum,'$bid',$type )"
+        "insert into version_lib (model_num, update_num, building_id, signal_type) values ($modelNum, $updateNum,'$bid',$type )"
     val result = connection.sendQuery(sql).join()
     return result.rowsAffected == 1L
 }
@@ -129,7 +129,7 @@ fun insertIntoStaticLib(bid: String, modelNum: Int, updateNum: Int, typeString: 
         "mag" -> 4
         else -> 0
     }
-    val sql = "insert into static_feature_lib (model_num, update_num, building_id, signal_type, floor, source_url) value ($modelNum, $updateNum, '$bid',$type,'$floor','$sourcePath')"
+    val sql = "insert into static_feature_lib (model_num, update_num, building_id, signal_type, floor, source_url) values ($modelNum, $updateNum, '$bid',$type,'$floor','$sourcePath')"
     val result = connection.sendQuery(sql).join()
     return result.rowsAffected == 1L
 }

@@ -80,6 +80,9 @@ fun Application.module() {
                     if (part is PartData.FileItem) {
                         val name = part.originalFileName!!
                         val f = File("/uploads/$bid/floor_$fid/${UUID.randomUUID().toString()+"-"+name}")
+                        if(!f.exists()){
+                            f.createNewFile()
+                        }
                         part.streamProvider().use { inputSteam ->
                             f.outputStream().buffered().use {
                                 inputSteam.copyTo(it)
@@ -103,6 +106,9 @@ fun Application.module() {
                     if (part is PartData.FileItem) {
                         val name = part.originalFileName!!
                         val f = File("/uploads/$bid/${UUID.randomUUID().toString()+"-"+name}")
+                        if(!f.exists()){
+                            f.createNewFile()
+                        }
                         part.streamProvider().use { inputSteam ->
                             f.outputStream().buffered().use {
                                 inputSteam.copyTo(it)
@@ -112,6 +118,7 @@ fun Application.module() {
                     }
                     part.dispose()
                 }
+                call.respond(HttpStatusCode.OK,"Uploaing succeed !")
             }
 
             post("/pic/{bid}") {
@@ -121,6 +128,9 @@ fun Application.module() {
                     if (part is PartData.FileItem) {
                         val name = part.originalFileName!!
                         val f = File("/uploads/$bid/${UUID.randomUUID().toString()+"-"+name}")
+                        if(!f.exists()){
+                            f.createNewFile()
+                        }
                         part.streamProvider().use { inputSteam ->
                             f.outputStream().buffered().use {
                                 inputSteam.copyTo(it)
@@ -130,6 +140,8 @@ fun Application.module() {
                     }
                     part.dispose()
                 }
+                call.respond(HttpStatusCode.OK,"Uploaing succeed !")
+
             }
             post("mag/{bid}/{fid}") {
                 val bid = call.parameters["bid"] ?: ""
@@ -139,6 +151,9 @@ fun Application.module() {
                     if (part is PartData.FileItem) {
                         val name = part.originalFileName!!
                         val f = File("/uploads/$bid/floor_$fid/${UUID.randomUUID().toString()+"-"+name}")
+                        if(!f.exists()){
+                            f.createNewFile()
+                        }
                         part.streamProvider().use { inputSteam ->
                             f.outputStream().buffered().use {
                                 inputSteam.copyTo(it)
@@ -149,6 +164,8 @@ fun Application.module() {
                     part.dispose()
 
                 }
+                call.respond(HttpStatusCode.OK,"Uploaing succeed !")
+
             }
         }
 
