@@ -54,7 +54,7 @@ private fun Array<PPoint>.totalCount(): Long {
     return c
 }
 
-private val baseSQL =
+private const val baseSQL =
     "insert into fingerprint_lib (model_num, update_num, building_id, floor, signal_type,coordinate_x,coordinate_y,signal_mac_address,signal_strength,signal_time) values"
 
 private fun genWifiInsertSql(points: Array<PPoint>, modelNum: Int, updateNum: Int): String {
@@ -102,13 +102,13 @@ fun getLastVersion(bid:String, type: String):IntArray{
 private fun getLastVersion(bid: String, type: Int):IntArray{
     val sql = "select * from version_lib where building_id = '$bid' and signal_type = $type order by model_num DESC, update_num DESC limit 1"
     val result = connection.sendQuery(sql).join()
-    if (!result.rows.isEmpty()){
+    return if (!result.rows.isEmpty()){
         val row = result.rows[0]
         val modelNum = row[1].toString().toInt()
         val updateNum = row[2].toString().toInt()
-        return intArrayOf(modelNum, updateNum)
+        intArrayOf(modelNum, updateNum)
     }else{
-        return intArrayOf(1,1)
+        intArrayOf(1,1)
     }
 }
 

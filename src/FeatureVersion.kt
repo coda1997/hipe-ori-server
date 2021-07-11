@@ -10,8 +10,7 @@ data class FeatureVersion(
 )
 
 fun getVersionByBid(bid: String): String {
-    val gson = Gson().toJson(getVersionsFromDB(bid))
-    return gson
+    return Gson().toJson(getVersionsFromDB(bid))
 }
 
 private fun getTypeByNum(num: Int) = when (num) {
@@ -23,8 +22,6 @@ private fun getTypeByNum(num: Int) = when (num) {
 }
 
 fun getVersionsFromDB(bid: String): Array<FeatureVersion> {
-    val sql = "select * from version_lib where building_id = $bid"
-    val result = connection.sendQuery(sql).join()
     val featureVersions = mutableListOf<FeatureVersion>()
     for (i in 1 ..4){
         val f = getVersionsByTypeFromDB(bid, i)
@@ -41,8 +38,8 @@ fun getVersionsByTypeFromDB(bid: String, type:Int):FeatureVersion?{
     if(res.rowsAffected!=1L){
         return null
     }
-    val model_num =  res.rows[0][1].toString().toInt()
-    val update_num = res.rows[0][2].toString().toInt()
-    val signal_type = getTypeByNum(res.rows[0][4].toString().toInt())
-    return FeatureVersion(bid,model_num,update_num,signal_type)
+    val modelNum =  res.rows[0][1].toString().toInt()
+    val updateNum = res.rows[0][2].toString().toInt()
+    val signalType = getTypeByNum(res.rows[0][4].toString().toInt())
+    return FeatureVersion(bid,modelNum,updateNum,signalType)
 }
