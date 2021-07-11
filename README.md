@@ -6,6 +6,40 @@ A tiny server for syncing point data to users
 
 ## API
 
+### 楼层信息查询
+
+#### 简要描述
+
+- 返回可以上传指纹库的楼层信息（暂时仅可以查询，后续可以添加）
+
+#### 请求url
+
+- GET http://xxx/infos
+
+#### 返回样例
+
+```json
+[
+    {
+        "bid": "shilintong",
+        "fids": [
+            1,
+            2,
+            3,
+            4,
+            5
+        ]
+    },
+    {
+        "bid": "wukan",
+        "fids": [
+            -2,
+            -1
+        ]
+    }
+]
+```
+
 ### 指纹文件上传
 
 #### 简要描述

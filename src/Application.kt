@@ -176,6 +176,13 @@ fun Application.module() {
 
             }
         }
+        route("/infos"){
+            get{
+                call.respond(
+                    fetchInfos()
+                )
+            }
+        }
 
     }
 }
