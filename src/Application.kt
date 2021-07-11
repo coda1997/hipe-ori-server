@@ -8,11 +8,9 @@ import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.http.*
 import io.ktor.http.content.*
-import io.ktor.response.*
 import io.ktor.request.*
+import io.ktor.response.*
 import io.ktor.routing.*
-import io.ktor.server.engine.*
-import io.ktor.server.netty.*
 import java.io.File
 import java.io.FileReader
 import java.util.*
@@ -176,11 +174,35 @@ fun Application.module() {
 
             }
         }
-        route("/infos"){
-            get{
-                call.respond(
-                    fetchInfos()
-                )
+        route("/infos") {
+            get {
+                call.respond(getInfos())
+            }
+            post {
+                val buildingInfos = call.receive<Array<BuildingInfo>>()
+                val res = insertInfos(buildingInfos)
+                call.respond(HttpStatusCode.OK){
+                    "insert building info succeed !"
+                }
+            }
+            delete("/{bid}") {
+                val bid = call.parameters["bid"]
+                bid?.let {
+                    deleteInfoBid(it)
+                }
+                call.respond(HttpStatusCode.OK){
+                    "insert building info succeed !"
+                }
+            }
+            delete ( "/{bid}/{fid}" ){
+                val bid = call.parameters["bid"]
+                val fid = call.parameters["fid"]?.toInt() ?: 0
+                bid?.let {
+                    deleteInfoByBidAndFid(bid, fid)
+                }
+                call.respond(HttpStatusCode.OK){
+                    "insert building info succeed !"
+                }
             }
         }
 

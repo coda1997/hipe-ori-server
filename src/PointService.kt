@@ -1,8 +1,5 @@
 package com.dadachen
 
-import com.github.jasync.sql.db.Connection
-import com.github.jasync.sql.db.postgresql.PostgreSQLConnectionBuilder
-
 data class Point(
     val id: Int,
     val type: Int,
@@ -13,15 +10,6 @@ data class Point(
     val latitude: String,
     val longitude: String
 )
-
-enum class PointType(val type: Int) {
-    WIFI(1),
-    BLE(2),
-    MAG(3),
-    IMG(4)
-}
-
-
 
 const val INSERT_SQL = "insert into point (type, time, building_name, floor, level, latitude, longitude) values "
 
