@@ -16,6 +16,7 @@ import io.ktor.server.netty.*
 import java.io.File
 import java.io.FileReader
 import java.util.*
+
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 lateinit var connection: Connection
@@ -60,12 +61,12 @@ fun Application.module() {
             }
         }
         route("/feature") {
-            get("/version/{bid}"){
+            get("/version/{bid}") {
                 val bid = call.parameters["bid"] ?: ""
                 val data = getVersionByBid(bid)
                 call.respondText(data)
             }
-            get("/{bid}"){
+            get("/{bid}") {
                 val bid = call.parameters["bid"] ?: ""
                 val f = downloadFeatureData(arrayOf(bid))
                 call.respondFile(f)
@@ -79,8 +80,9 @@ fun Application.module() {
                 multipart.forEachPart { part ->
                     if (part is PartData.FileItem) {
                         val name = part.originalFileName!!
-                        val f = File("/uploads/$bid/floor_$fid/${UUID.randomUUID().toString()+"-"+name}")
-                        if(!f.exists()){
+                        val f = File("/uploads/$bid/floor_$fid/${UUID.randomUUID().toString() + "-" + name}")
+                        f.parentFile.mkdirs()
+                        if (!f.exists()) {
                             f.createNewFile()
                         }
                         part.streamProvider().use { inputSteam ->
@@ -105,8 +107,10 @@ fun Application.module() {
                 multipart.forEachPart { part ->
                     if (part is PartData.FileItem) {
                         val name = part.originalFileName!!
-                        val f = File("/uploads/$bid/${UUID.randomUUID().toString()+"-"+name}")
-                        if(!f.exists()){
+                        val f = File("/uploads/$bid/${UUID.randomUUID().toString() + "-" + name}")
+                        f.parentFile.mkdirs()
+
+                        if (!f.exists()) {
                             f.createNewFile()
                         }
                         part.streamProvider().use { inputSteam ->
@@ -118,7 +122,7 @@ fun Application.module() {
                     }
                     part.dispose()
                 }
-                call.respond(HttpStatusCode.OK,"Uploaing succeed !")
+                call.respond(HttpStatusCode.OK, "Uploaing succeed !")
             }
 
             post("/pic/{bid}") {
@@ -127,8 +131,10 @@ fun Application.module() {
                 multipart.forEachPart { part ->
                     if (part is PartData.FileItem) {
                         val name = part.originalFileName!!
-                        val f = File("/uploads/$bid/${UUID.randomUUID().toString()+"-"+name}")
-                        if(!f.exists()){
+                        val f = File("/uploads/$bid/${UUID.randomUUID().toString() + "-" + name}")
+                        f.parentFile.mkdirs()
+
+                        if (!f.exists()) {
                             f.createNewFile()
                         }
                         part.streamProvider().use { inputSteam ->
@@ -140,7 +146,7 @@ fun Application.module() {
                     }
                     part.dispose()
                 }
-                call.respond(HttpStatusCode.OK,"Uploaing succeed !")
+                call.respond(HttpStatusCode.OK, "Uploaing succeed !")
 
             }
             post("mag/{bid}/{fid}") {
@@ -150,8 +156,10 @@ fun Application.module() {
                 multipart.forEachPart { part ->
                     if (part is PartData.FileItem) {
                         val name = part.originalFileName!!
-                        val f = File("/uploads/$bid/floor_$fid/${UUID.randomUUID().toString()+"-"+name}")
-                        if(!f.exists()){
+                        val f = File("/uploads/$bid/floor_$fid/${UUID.randomUUID().toString() + "-" + name}")
+                        f.parentFile.mkdirs()
+
+                        if (!f.exists()) {
                             f.createNewFile()
                         }
                         part.streamProvider().use { inputSteam ->
@@ -164,7 +172,7 @@ fun Application.module() {
                     part.dispose()
 
                 }
-                call.respond(HttpStatusCode.OK,"Uploaing succeed !")
+                call.respond(HttpStatusCode.OK, "Uploaing succeed !")
 
             }
         }

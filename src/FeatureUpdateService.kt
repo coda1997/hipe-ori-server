@@ -146,7 +146,7 @@ fun updatePicFeature(bid: String, file: File): Boolean {
 
 fun updateMagFeature(bid: String, fid: Int, file: File): Boolean {
     val r = getLastVersion(bid, "mag")
-    val path = "/uploads/$bid/${file.name}"
+    val path = "/uploads/$bid/floor_$fid/${file.name}"
     updateVersion(r[0]+1, r[1], bid, "mag")
-    return insertIntoStaticLib(bid, r[0],r[1],"mag",fid.toString(),path)
+    return insertIntoStaticLib(bid, r[0]+1,r[1],"mag",fid.toString(),path)
 }
