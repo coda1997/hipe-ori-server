@@ -100,7 +100,7 @@ fun getLastVersion(bid:String, type: String):IntArray{
     return getLastVersion(bid, intType)
 }
 private fun getLastVersion(bid: String, type: Int):IntArray{
-    val sql = "select * from version_lib where building_id = '$bid' and signal_type = $type order by model_num, update_num DESC limit 1"
+    val sql = "select * from version_lib where building_id = '$bid' and signal_type = $type order by model_num DESC, update_num DESC limit 1"
     val result = connection.sendQuery(sql).join()
     if (!result.rows.isEmpty()){
         val row = result.rows[0]
