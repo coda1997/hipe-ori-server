@@ -37,7 +37,7 @@ fun insertInfos(infos:Array<BuildingInfo>):Boolean{
     if (infos.isEmpty()) {
         return true
     }
-    val sql = "insert into building_info (fid, bid) values"
+    val sql = "insert into building_info (bid, fid) values "
     val insertSql = sql+infos.map {
         it.toSqlString()
     }.joinToString { "," }
