@@ -90,7 +90,7 @@ fun Application.module() {
                             }
                         }
                         f.decrypt()
-                        success = updateWifiFeature(f, bid) && success
+                        success = updateWifiFeature(f, bid)
                     }
                     part.dispose()
                 }
@@ -215,11 +215,11 @@ fun Application.module() {
 }
 
 fun File.decrypt(key :String= "ABCDEFGHIJKLMNOP"){
-    val sm4Utils = SM4Utils.sm4Utils
-    sm4Utils.secretKey = key
-    val s = this.readText()
-    val res = sm4Utils.decryptData_ECB(s)
-    this.writeText(res)
+//    val sm4Utils = SM4Utils.sm4Utils
+//    sm4Utils.secretKey = key
+//    val s = this.readText()
+//    val res = sm4Utils.decryptData_ECB(s)
+//    this.writeText(res)
 }
 
 

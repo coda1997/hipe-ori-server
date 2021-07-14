@@ -3,6 +3,7 @@ package com.dadachen
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
 import java.io.File
+import java.lang.StringBuilder
 
 data class PPoint(
     @SerializedName("Building ID") val bid: String,
@@ -28,20 +29,19 @@ data class WifiScanInfo(
     @SerializedName("AP") val ap: Int
 )
 
-fun     updateWifiFeature(file: File, bid: String): Boolean {
-    val content = file.readBytes()
+fun updateWifiFeature(file: File, bid: String): Boolean {
+    val content = file.readText()
     //its a json file, need to parse it
-    val points = Gson().fromJson(content.toString(), Array<PPoint>::class.java)
+    val points = Gson().fromJson(content, Array<PPoint>::class.java)
     val r = getLastVersion(bid, "wifi")
     val modelNum = r[0]
     val updateNum = r[1]+1
     //handle points
-    val sql = genWifiInsertSql(points, modelNum, updateNum)
-    updateVersion(modelNum, updateNum, bid, "wifi")
     //insert points into db file
-    val result = connection.sendQuery(sql).join()
-
-    return result.rowsAffected == points.totalCount()
+    genWifiInsertSql(points, modelNum, updateNum)
+    updateVersion(modelNum, updateNum, bid, "wifi")
+    return true
+//    return result.rowsAffected == points.totalCount()
 }
 
 private fun Array<PPoint>.totalCount(): Long {
@@ -55,20 +55,33 @@ private fun Array<PPoint>.totalCount(): Long {
 }
 
 private const val baseSQL =
-    "insert into fingerprint_lib (model_num, update_num, building_id, floor, signal_type,coordinate_x,coordinate_y,signal_mac_address,signal_strength,signal_time) values"
+    "insert into fingerprint_lib (model_num, update_num, building_id, floor, signal_type,coordinate_x,coordinate_y,signal_mac_address,signal_name,signal_strength,signal_time) values"
 
-private fun genWifiInsertSql(points: Array<PPoint>, modelNum: Int, updateNum: Int): String {
+private fun genWifiInsertSql(points: Array<PPoint>, modelNum: Int, updateNum: Int) {
     val sqlList = mutableListOf<String>()
     for (point in points) {
+        if (point.bid==""){
+            continue
+        }
         for (wifiScan in point.wifiScans) {
             for (wifiScanInfo in wifiScan.wifiScanInfos) {
+                if(sqlList.size>1000){
+                    val t = sqlList.joinToString(",")
+//                    print(baseSQL+t)
+                    connection.sendQuery(baseSQL+t)
+                    sqlList.clear()
+                }
                 val sql =
-                    "($modelNum,$updateNum,'${point.bid}','${point.fid}',${point.posLon},${point.posLat},'${wifiScanInfo.bssid}',${wifiScanInfo.level},'${wifiScanInfo.date}')"
+                    "($modelNum,$updateNum,'${point.bid}','${point.fid}',1,${point.posLon},${point.posLat},'${wifiScanInfo.bssid}','${wifiScanInfo.ssid}',${wifiScanInfo.level},'${wifiScanInfo.date}')"
                 sqlList.add(sql)
             }
         }
     }
-    return baseSQL + sqlList.joinToString(",")
+    if (sqlList.size>0){
+        val t = sqlList.joinToString(",")
+        connection.sendQuery(baseSQL+t)
+        sqlList.clear()
+    }
 }
 
 private fun updateVersion(modelNum: Int, updateNum: Int, bid: String, type: Int): Boolean {
