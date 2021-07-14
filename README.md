@@ -206,3 +206,6 @@ bid为大楼名（字母）、fid为楼层（数字）
 |:-----  |:-----|-----                           |
 |code |int   |表示成功添加的点个数，-1表示添加失败  |
 
+## 采集Wi-Fi Android app
+
+repo：https://github.com/coda1997/Hipe-localization

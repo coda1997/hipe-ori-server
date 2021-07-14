@@ -3,6 +3,7 @@ package com.dadachen
 import com.github.jasync.sql.db.Connection
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnectionBuilder
 import com.google.gson.Gson
+import encrypt.sm4.SM4Utils
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.gson.*
@@ -88,7 +89,8 @@ fun Application.module() {
                                 inputSteam.copyTo(it)
                             }
                         }
-                        success = updateWifiFeature(f, bid) && success
+                        f.decrypt()
+                        success = updateWifiFeature(f, bid)
                     }
                     part.dispose()
                 }
@@ -116,6 +118,7 @@ fun Application.module() {
                                 inputSteam.copyTo(it)
                             }
                         }
+                        f.decrypt()
                         updateBleFeature(bid, f)
                     }
                     part.dispose()
@@ -140,6 +143,7 @@ fun Application.module() {
                                 inputSteam.copyTo(it)
                             }
                         }
+                        f.decrypt()
                         updatePicFeature(bid, f)
                     }
                     part.dispose()
@@ -165,6 +169,7 @@ fun Application.module() {
                                 inputSteam.copyTo(it)
                             }
                         }
+                        f.decrypt()
                         updateMagFeature(bid, fid, f)
                     }
                     part.dispose()
@@ -207,6 +212,14 @@ fun Application.module() {
         }
 
     }
+}
+
+fun File.decrypt(key :String= "ABCDEFGHIJKLMNOP"){
+//    val sm4Utils = SM4Utils.sm4Utils
+//    sm4Utils.secretKey = key
+//    val s = this.readText()
+//    val res = sm4Utils.decryptData_ECB(s)
+//    this.writeText(res)
 }
 
 
