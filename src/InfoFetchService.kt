@@ -40,7 +40,7 @@ fun getInfos(): Array<BuildingInfo> {
 }
 
 fun getFeatureInfos(bid: String):Array<FeatureInfo>{
-    val sql = "select * from static_feature_lib where bid = '$bid'"
+    val sql = "select * from static_feature_lib where building_id = '$bid'"
     val res = connection.sendQuery(sql).join()
     val infos = mutableListOf<FeatureInfo>()
     res.rows.forEach {
