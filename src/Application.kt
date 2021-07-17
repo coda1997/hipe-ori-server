@@ -79,7 +79,7 @@ fun Application.module() {
                 multipart.forEachPart { part ->
                     if (part is PartData.FileItem) {
                         val name = part.originalFileName!!
-                        val f = File("/uploads/$bid/floor_$fid/${UUID.randomUUID().toString() + "-" + name}")
+                        val f = File("/uploads/$bid/floor_$fid/${Date().time.toString() + "-" + name}")
                         f.parentFile.mkdirs()
                         if (!f.exists()) {
                             f.createNewFile()
@@ -107,7 +107,7 @@ fun Application.module() {
                 multipart.forEachPart { part ->
                     if (part is PartData.FileItem) {
                         val name = part.originalFileName!!
-                        val f = File("/uploads/$bid/${UUID.randomUUID().toString() + "-" + name}")
+                        val f = File("/uploads/$bid/${Date().time.toString() + "-" + name}")
                         f.parentFile.mkdirs()
 
                         if (!f.exists()) {
@@ -132,7 +132,7 @@ fun Application.module() {
                 multipart.forEachPart { part ->
                     if (part is PartData.FileItem) {
                         val name = part.originalFileName!!
-                        val f = File("/uploads/$bid/${UUID.randomUUID().toString() + "-" + name}")
+                        val f = File("/uploads/$bid/${Date().time.toString() + "-" + name}")
                         f.parentFile.mkdirs()
 
                         if (!f.exists()) {
@@ -158,7 +158,7 @@ fun Application.module() {
                 multipart.forEachPart { part ->
                     if (part is PartData.FileItem) {
                         val name = part.originalFileName!!
-                        val f = File("/uploads/$bid/floor_$fid/${UUID.randomUUID().toString() + "-" + name}")
+                        val f = File("/uploads/$bid/floor_$fid/${Date().time.toString() + "-" + name}")
                         f.parentFile.mkdirs()
 
                         if (!f.exists()) {

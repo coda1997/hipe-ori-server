@@ -28,6 +28,13 @@ A tiny server for syncing point data to users
             3,
             4,
             5
+        ],
+        "features": [
+          {
+            "type": "wifi",
+            "fid": 1,
+            "path": "/uploads/shilingtong/654f8ef1-ee0b-4185-95b9-d105d11f561f-shilintong.db"
+          }
         ]
     },
     {
@@ -35,7 +42,8 @@ A tiny server for syncing point data to users
         "fids": [
             -2,
             -1
-        ]
+        ],
+        "feature": []
     }
 ]
 ```
