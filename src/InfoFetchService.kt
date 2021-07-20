@@ -1,7 +1,5 @@
 package com.dadachen
 
-import com.google.gson.Gson
-
 data class BuildingInfo(
     var bid: String,
     var fids: Array<Int>,

@@ -3,7 +3,6 @@ package com.dadachen
 import com.github.jasync.sql.db.Connection
 import com.github.jasync.sql.db.postgresql.PostgreSQLConnectionBuilder
 import com.google.gson.Gson
-import encrypt.sm4.SM4Utils
 import io.ktor.application.*
 import io.ktor.features.*
 import io.ktor.gson.*
@@ -187,7 +186,7 @@ fun Application.module() {
                 val buildingInfos = call.receive<Array<BuildingInfo>>()
                 val res = insertInfos(buildingInfos)
                 call.respond(HttpStatusCode.OK){
-                    "insert building info succeed !"
+                    "add building info succeed !"
                 }
             }
             delete("/{bid}") {
@@ -196,7 +195,7 @@ fun Application.module() {
                     deleteInfoBid(it)
                 }
                 call.respond(HttpStatusCode.OK){
-                    "insert building info succeed !"
+                    "delete building info succeed !"
                 }
             }
             delete ( "/{bid}/{fid}" ){

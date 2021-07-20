@@ -48,6 +48,31 @@ A tiny server for syncing point data to users
 ]
 ```
 
+#### 添加楼层信息（指纹文件不在此添加）
+- URL `POST http://xxx/infos`
+
+- post body：
+```json
+[
+  {
+    "bid": "xxx",
+    "fids": [
+      1,
+      2,
+      3,
+      4,
+      -1
+    ],
+    "feature": []
+  }
+]
+```
+注：其中feature必须是空对象数组，即[]。
+
+#### 删除楼层信息
+
+- URL `DELETE http://xxx/infos/bid`
+
 ### 指纹文件上传
 
 #### 简要描述
