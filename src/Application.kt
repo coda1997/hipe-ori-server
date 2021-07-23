@@ -40,6 +40,16 @@ fun Application.module() {
             call.respond(HttpStatusCode.InternalServerError, message = cause.localizedMessage)
         }
     }
+    install(CORS){
+        anyHost()
+        method(HttpMethod.Delete)
+        method(HttpMethod.Get)
+        method(HttpMethod.Patch)
+        method(HttpMethod.Post)
+        method(HttpMethod.Options)
+        allowCredentials = true
+        allowNonSimpleContentTypes = true
+    }
     routing {
         route("/point") {
             get {
