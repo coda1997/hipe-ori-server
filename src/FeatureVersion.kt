@@ -33,7 +33,7 @@ fun getVersionsFromDB(bid: String): Array<FeatureVersion> {
 }
 
 fun getVersionsByTypeFromDB(bid: String, type:Int):FeatureVersion?{
-    val sql = "select * from version_lib where building_id = $bid and signal_type = $type order by model_num, update_num DESC limit 1"
+    val sql = "select * from version_lib where building_id = '$bid' and signal_type = $type order by model_num, update_num DESC limit 1"
     val res = connection.sendQuery(sql).join()
     if(res.rowsAffected!=1L){
         return null
