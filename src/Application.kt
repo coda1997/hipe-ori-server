@@ -72,7 +72,7 @@ fun Application.module() {
             get("/version/{bid}") {
                 val bid = call.parameters["bid"] ?: ""
                 val data = getVersionByBid(bid)
-                call.respondText(data)
+                call.respond(data)
             }
             get("/{bid}") {
                 val bid = call.parameters["bid"] ?: ""
